@@ -9,7 +9,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/bank
     username: root
-    password:
+    password: 1234
 
 
 
