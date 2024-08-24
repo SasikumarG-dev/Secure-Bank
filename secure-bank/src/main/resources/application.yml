@@ -7,10 +7,10 @@ spring:
     username: root
     password: 1234
 
-  security:
-    user:
-      name: admin
-      password: secret
+#  security:
+#    user:
+#      name: admin
+#      password: secret
 
 
 

@@ -15,7 +15,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<ApiResponse<User>> registerUser(@RequestBody User user){
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ApiResponse<>("Success", userService.registerUser(user),null));

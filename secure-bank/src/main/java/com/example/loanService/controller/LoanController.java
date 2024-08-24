@@ -23,7 +23,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/loan")
+@RequestMapping("/bank/loan")
 @RequiredArgsConstructor
 @Data
 public class LoanController {
