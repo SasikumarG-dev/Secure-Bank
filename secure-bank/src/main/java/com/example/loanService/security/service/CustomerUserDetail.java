@@ -16,11 +16,12 @@ public class CustomerUserDetail implements UserDetails {
     private String password;
     private List<GrantedAuthority> authorities;
 
-    public CustomerUserDetail(User user){
+
+    public CustomerUserDetail(User user) {
         emailId = user.getEmailId();
         password = user.getPassword();
-        authorities = Arrays.stream(user.getRole().split(","))
-                .map(SimpleGrantedAuthority::new)
+        authorities = user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName().toString()))
                 .collect(Collectors.toList());
     }
 

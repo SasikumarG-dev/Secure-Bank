@@ -21,7 +21,6 @@ import java.util.Map;
 public class JwtService {
 
 
-
     @Autowired
     private UserRepository userRepository;
 
@@ -31,50 +30,27 @@ public class JwtService {
             throw new UsernameNotFoundException("Invalid User: " + emailId);
         }
 
-        if (isValidRole(user.getRole())) {
-            Map<String, Object> claims = new HashMap<>();
-            claims.put("userId", user.getUserId());
-            claims.put("role", user.getRole());
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", user.getUserId());
+        claims.put("role", user.getRoles());
 
-            String jwtToken = createToken(claims, emailId);
-            return new AuthResponse(jwtToken);
-        } else {
-            throw new UsernameNotFoundException("Invalid User");
-        }
+        String jwtToken = createToken(claims, emailId);
+        return new AuthResponse(jwtToken);
+
     }
-//    public AuthResponse generateToken(String emailId){
-//        Map<String, Object> claims = new HashMap<>();
-//        User user = userRepository.findByEmailId(emailId);
-//        if(user != null){
-//            // validate the roles of the user
-//
-//            if(user.getRole().equals(ApplicationConstant.USER_ROLE)
-//                    || user.getRole().equals(ApplicationConstant.ADMIN_ROLE)){
-//                claims.put("userId", user.getUserId());
-//                claims.put("role", user.getRole());
-//                String jwtToken = createToken(claims, emailId);
-//                return new AuthResponse(jwtToken);
-//            }
-//            else {
-//                throw new UsernameNotFoundException("Invalid User role");
-//            }
-//        }
-//        else {
-//            throw new UsernameNotFoundException("Invalid User: "+emailId);
-//        }
-//    }
 
-    private String createToken(Map<String, Object> claims, String emailId){
+
+    private String createToken(Map<String, Object> claims, String emailId) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(emailId)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 *30)))
+                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 30)))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    private Key getSignKey(){
+    private Key getSignKey() {
         byte[] key = Decoders.BASE64.decode(ApplicationConstant.JWT_SECRET_KEY);
         return Keys.hmacShaKeyFor(key);
     }

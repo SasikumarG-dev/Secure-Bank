@@ -2,6 +2,7 @@ package com.example.loanService.security.config;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.function.Function;
 
 import com.example.loanService.util.ApplicationConstant;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,12 @@ public class TokenValidation {
 
     public String extractUserName(String token) {
         return extractAllClaims(token).get("userId").toString();
+        //return extractClaim(token, Claims::getSubject);
+
+    }
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
     }
 
     public Date getExpirationDate(String token) {
